@@ -28,7 +28,7 @@ import javax.imageio.stream.ImageOutputStream;
 //import org.im4java.core.IM4JavaException;
 //import org.im4java.core.IMOperation;
 //import org.im4java.core.IdentifyCmd;
-import org.springframework.util.Assert;
+//import org.springframework.util.Assert;
 
 /**
  * Utils - 图片处理(支持JDK、GraphicsMagick、ImageMagick)

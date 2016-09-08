@@ -28,17 +28,17 @@ public class UserServiceTest {
 	private static final Logger LOGGER = Logger
 			.getLogger(UserServiceTest.class);
 
-	@Autowired
-	private UserService userService;
-
-	@Test
-	public void save() {
-		UserEntity user = new UserEntity();
-		user.setUsername("wxhao");
-		user.setPassword("123456");
-		
-		String id = userService.save(user);
-		LOGGER.info(JSON.toJSONString(id));
-	}
+//	@Autowired
+//	private UserService userService;
+//
+//	@Test
+//	public void save() {
+//		UserEntity user = new UserEntity();
+//		user.setUsername("wxhao");
+//		user.setPassword("123456");
+//		
+//		String id = userService.save(user);
+//		LOGGER.info(JSON.toJSONString(id));
+//	}
 
 }
