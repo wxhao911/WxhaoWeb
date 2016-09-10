@@ -1,8 +1,7 @@
 package com.wxhao.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+
+import java.util.Random;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -12,12 +11,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alibaba.fastjson.JSON;
-import com.wxhao.entity.UserEntity;
+import com.wxhao.dao.IUserDao;
+import com.wxhao.entity.User;
+
 
 /**
- * 创建时间：2015-2-6 下午3:31:07
+ * 创建时间：2016-9-6 下午3:31:07
  * 
- * @author andy
+ * @author wxhao
  * @version 2.2
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,17 +29,19 @@ public class UserServiceTest {
 	private static final Logger LOGGER = Logger
 			.getLogger(UserServiceTest.class);
 
-//	@Autowired
-//	private UserService userService;
-//
-//	@Test
-//	public void save() {
-//		UserEntity user = new UserEntity();
-//		user.setUsername("wxhao");
-//		user.setPassword("123456");
-//		
-//		String id = userService.save(user);
-//		LOGGER.info(JSON.toJSONString(id));
-//	}
+	@Autowired
+	private IUserDao userDao;
+
+	@Test
+	public void save() {
+		Random r=new Random();
+		User user = new User();
+		user = new User();
+		user.setUsername("wxhao"+r.nextInt());
+		user.setPassword("123456");
+		String id=userDao.save(user);
+		
+		LOGGER.info(JSON.toJSONString(id));
+	}
 
 }

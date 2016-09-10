@@ -1,9 +1,9 @@
-package com.wxhao.controller;
+package com.wxhao.controller.api;
 
 import java.io.PrintWriter;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,17 +13,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.wxhao.dao.UserDao;
-import com.wxhao.entity.AcctUser;
+import com.wxhao.dao.IUserDao;
+import com.wxhao.entity.User;
+import com.wxhao.service.IUserService;
 
+/**
+ * 测试controller
+ * @author wxhao
+ *
+ */
 @Controller("testController")
-@RequestMapping("/test")
+@RequestMapping("/api/test")
 public class TestController {
 
 	@Autowired
-	private UserDao userDao;
+	private IUserService userService;
 	
 	/**
 	 * api/test/t.jhtml?
@@ -37,25 +42,35 @@ public class TestController {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out=response.getWriter();
 		
+		User user = null;
 		
-		//int data =OrderItemDao.countSale(DateUtil.getTimesWeekmorning(), DateUtil.getTimesWeeknight(), new Long(67),"quantity");
-//		AcctUser user = new AcctUser();
-//		user.setNickName("wxhao");
-//		user.setTelephone("123456");
-//		userDao.persist(user);
-		AcctUser acctUser = new AcctUser();
-		acctUser.setId(UUID.randomUUID().toString());
-		acctUser.setNickName("andy");
-		acctUser.setRegisterTime(new Date());
-		acctUser.setTelephone("13022221111");
-		String id = userDao.save(acctUser);
-		userDao.flush();
-		List<AcctUser> list=userDao.findAll();
+		Random r=new Random();
+		
+		List<String> list=new ArrayList<String>();
+		for(int i =0; i<2;i++){
+			user = new User();
+			user.setUsername("wxhao"+r.nextInt());
+			user.setPassword("123456");
+			String id=userService.save(user);
+			list.add(id);
+		}
+		System.out.println("/////////");
+		user = new User();
+		user.setUsername("wxhao"+r.nextInt());
+		user.setPassword("123456");
+		userService.persist(user);
+		System.out.println("++++++++");
+		System.out.println("*-----------------");
+		userService.flush();
 		JSONObject json=new JSONObject();
-		json.put("id", id);
+//		userDao.findAll();
 		json.put("list", list);
+//		json.put("list", list);
 		out.write(json.toString());
 		out.flush();
 		out.close();
 	}
+	
+	
+	
 }

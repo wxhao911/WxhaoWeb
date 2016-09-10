@@ -1,72 +1,67 @@
-package com.wxhao.entity;
+package com.wxhao.util.base;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
-
-
-
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-
+import com.wxhao.util.DataConfig.DataState;
 
 /**
  * BaseEntity
  * @author wxhao
- * Base基类
+ * Entity基类
  */
 @JsonAutoDetect(fieldVisibility = Visibility.NONE, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE, creatorVisibility = Visibility.NONE)
 @MappedSuperclass
 public class BaseEntity implements Serializable{
 	
-	private static final long serialVersionUID = 3360244613288983219L;
+	private static final long serialVersionUID = 4708659236836845794L;
 
-	/**数据类型**/
-	public enum DataState{
-		/**有效**/
-		valid,
-		/**无效**/
-		invalid
-	}
-	
-	/** ID */
-	private Long id;
+	/** ID **/
+	private String uid;
 
-	/** 创建日期 */
+	/** 创建日期 **/
 	private Date createDate;
 
-	/** 修改日期 */
+	/** 修改日期 **/
 	private Date modifyDate;
 	
-	/** 数据状态 */
+	/** 数据状态 **/
 	private DataState dataState;
 	
-	/** 数据状态 */
+	/** 乐观锁 **/
 	@Version
-	private int version;
-	
+	private long version;
 
+	public BaseEntity(){
+		this.setUid(UUID.randomUUID().toString());
+		this.setCreateDate(new Date());
+		this.setModifyDate(new Date());
+		this.setDataState(DataState.valid);
+	}
+	
 	/**
-	 * 获取id
+	 * 获取uid
 	 * @return
 	 */
 	@JsonProperty
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "sequenceGenerator")
-	public Long getId() {
-		return id;
+	@Column(name = "uid", unique = true, nullable = false, length = 36)
+	public String getUid() {
+		return uid;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setUid(String uid) {
+		this.uid = uid;
 	}
 
 	/**
@@ -99,7 +94,14 @@ public class BaseEntity implements Serializable{
 		this.modifyDate = modifyDate;
 	}
 
-	
+	/**
+	 * 获取数据状态
+	 * 
+	 * @return 数据状态
+	 */
+	@JSONField(serialize=false)
+	@JsonProperty
+	@Column(nullable = false)
 	public DataState getDataState() {
 		return dataState;
 	}
@@ -108,14 +110,15 @@ public class BaseEntity implements Serializable{
 		this.dataState = dataState;
 	}
 
-	
+	@JSONField(serialize=false)
 	@Version
-    @Column(name = "version",length = 11)
-	public int getVersion() {
+    @Column(name = "version",length = 20)
+	public long getVersion() {
 		return version;
 	}
 
-	public void setVersion(int version) {
+	
+	public void setVersion(long version) {
 		this.version = version;
 	}
 	
