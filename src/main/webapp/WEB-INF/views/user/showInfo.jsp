@@ -17,16 +17,8 @@
 <title>userInfo</title>
 </head>
 <body>
-	用户信息 昵称： ${userInfo.nickName} 用户id：${userInfo.id} 用户电话:${userInfo.telephone } 注册时间：
-	<fmt:formatDate value="${userInfo.registerTime }" pattern="yyyy-MM-dd HH:mm:ss" />
-	角色：[
-	<c:forEach items="${ userInfo.acctRoles}" var="role">
-	                    ${role.name }   权限[
-	                       <c:forEach items="${ role.acctAuthorities}" var="authority">
-	                         ${authority.name } 
-	                       </c:forEach> ]
-	                  </c:forEach>
-	]
+	用户信息 昵称： ${userInfo.username} 用户id：${userInfo.uid}  注册时间：
+	<fmt:formatDate value="${userInfo.createDate }" pattern="yyyy-MM-dd HH:mm:ss" />
 
 	<br /> ajax显示全部用户信息：
 	<div id="show_all_user"></div>
@@ -39,9 +31,8 @@
 		success : function(data) {
 			$(data).each(
 					function(i, user) {
-						var p = "<p>昵称:" + user.nickName + "    电话:"
-								+ user.telephone + "    注册时间:"
-								+ user.registerTime + "    id:" + user.id +
+						var p = "<p>昵称:" + user.username + "        注册时间:"
+								+ user.createDate + "    id:" + user.uid +
 						"</p>";
 						$("#show_all_user").append(p);
 					});
